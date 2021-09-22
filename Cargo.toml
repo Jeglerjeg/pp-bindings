@@ -1,0 +1,17 @@
+[package]
+name = "pp-bindings"
+version = "0.1.0"
+edition = "2018"
+
+[lib]
+name = "pp_bindings"
+crate-type = ["cdylib"]
+
+[dependencies.cpython]
+version = "0.6"
+features = ["extension-module"]
+
+[dependencies.rosu-pp]
+version = "0.2.3"
+default_features = false
+features = ["osu", "taiko", "mania", "fruits", "all_included"]
