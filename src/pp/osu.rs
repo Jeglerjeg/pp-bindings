@@ -1,12 +1,14 @@
 use cpython::{ToPyObject, PyDict, Python};
 use std::fs::File;
 use rosu_pp::{Beatmap, OsuPP, BeatmapExt};
+use rosu_pp::osu::OsuAttributeProvider;
 
 pub(crate) struct StdResults {
     total_stars: f32,
     partial_stars: f32,
     pp: f32,
-    max_pp: f32
+    max_pp: f32,
+    max_combo: usize
 }
 
 impl ToPyObject for StdResults {
@@ -18,6 +20,7 @@ impl ToPyObject for StdResults {
         dict.set_item(py, "partial_stars", self.partial_stars).unwrap();
         dict.set_item(py, "pp", self.pp).unwrap();
         dict.set_item(py, "max_pp", self.max_pp).unwrap();
+        dict.set_item(py, "max_combo", self.max_combo).unwrap();
 
         dict
     }
@@ -84,11 +87,15 @@ pub(crate) fn calculate_std_pp(map: String, mods: u32, combo: Option<usize>, acc
         None => new_result
     };
 
+    let result = result.calculate();
+    let new_result = new_result.calculate();
+
     let stats = StdResults {
         total_stars: map.stars(mods, None).stars(),
         partial_stars: map.stars(mods, passed_objects).stars(),
-        pp: result.calculate().pp(),
-        max_pp: new_result.calculate().pp()
+        pp: result.pp(),
+        max_pp: new_result.pp(),
+        max_combo: result.attributes().unwrap().max_combo
     };
 
     return stats;
