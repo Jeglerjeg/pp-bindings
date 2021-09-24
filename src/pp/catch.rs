@@ -1,11 +1,13 @@
 use cpython::{ToPyObject, PyDict, Python};
 use std::fs::File;
 use rosu_pp::{Beatmap, FruitsPP, BeatmapExt};
+use rosu_pp::fruits::FruitsAttributeProvider;
 
 pub(crate) struct CatchResults {
     total_stars: f32,
     partial_stars: f32,
     pp: f32,
+    max_combo: usize
 }
 
 impl ToPyObject for CatchResults {
@@ -16,6 +18,7 @@ impl ToPyObject for CatchResults {
         dict.set_item(py, "total_stars", self.total_stars).unwrap();
         dict.set_item(py, "partial_stars", self.partial_stars).unwrap();
         dict.set_item(py, "pp", self.pp).unwrap();
+        dict.set_item(py, "max_combo", self.max_combo).unwrap();
 
         dict
     }
@@ -73,10 +76,13 @@ pub(crate) fn calculate_catch_pp(map: String, mods: u32, combo: Option<usize>, f
         None => result.misses(0)
     };
 
+    let result = result.calculate();
+
     let stats = CatchResults {
         total_stars: map.stars(mods, None).stars(),
         partial_stars: map.stars(mods, passed_objects).stars(),
-        pp: result.calculate().pp(),
+        pp: result.pp(),
+        max_combo: result.attributes().unwrap().max_combo
     };
 
     return stats;
