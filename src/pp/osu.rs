@@ -78,23 +78,23 @@ pub(crate) fn calculate_std_pp(map: String, mods: u32, combo: Option<usize>, acc
         None => result.misses(0)
     };
 
-    let new_result = OsuPP::new(&map)
+    let potential_result = OsuPP::new(&map)
         .mods(mods)
         .misses(0);
 
-    let new_result = match potential_acc {
-        Some(x) => new_result.accuracy(x),
-        None => new_result
+    let potential_result = match potential_acc {
+        Some(x) => potential_result.accuracy(x),
+        None => potential_result
     };
 
     let result = result.calculate();
-    let new_result = new_result.calculate();
+    let potential_result = potential_result.calculate();
 
     let stats = StdResults {
         total_stars: map.stars(mods, None).stars(),
         partial_stars: map.stars(mods, passed_objects).stars(),
         pp: result.pp(),
-        max_pp: new_result.pp(),
+        max_pp: potential_result.pp(),
         max_combo: result.attributes().unwrap().max_combo
     };
 
