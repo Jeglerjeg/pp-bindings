@@ -44,11 +44,15 @@ pub(crate) fn calculate_taiko_pp(
 
     let result = TaikoPP::new(&map).mods(mods);
 
+    let result = match passed_objects {
+        Some(x) => result.passed_objects(x),
+        None => result,
+    };
+
     let result = match combo {
         Some(x) => result.combo(x),
         None => result,
     };
-
 
     let result = match nmiss {
         Some(x) => result.misses(x),
@@ -69,12 +73,6 @@ pub(crate) fn calculate_taiko_pp(
         Some(x) => result.accuracy(x),
         None => result,
     };
-
-    let result = match passed_objects {
-        Some(x) => result.passed_objects(x),
-        None => result,
-    };
-
 
     let stats = TaikoResults {
         total_stars: map.stars(mods, None).stars(),

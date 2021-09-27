@@ -51,6 +51,11 @@ pub(crate) fn calculate_std_pp(
 
     let result = OsuPP::new(&map).mods(mods);
 
+    let result = match passed_objects {
+        Some(x) => result.passed_objects(x),
+        None => result,
+    };
+
     let result = match combo {
         Some(x) => result.combo(x),
         None => result,
@@ -78,11 +83,6 @@ pub(crate) fn calculate_std_pp(
 
     let result = match acc {
         Some(x) => result.accuracy(x),
-        None => result,
-    };
-
-    let result = match passed_objects {
-        Some(x) => result.passed_objects(x),
         None => result,
     };
 
