@@ -48,6 +48,11 @@ pub(crate) fn calculate_catch_pp(
 
     let result = FruitsPP::new(&map).mods(mods);
 
+    let result = match nmiss {
+        Some(x) => result.misses(x),
+        None => result.misses(0),
+    };
+
     let result = match combo {
         Some(x) => result.combo(x),
         None => result,
@@ -76,11 +81,6 @@ pub(crate) fn calculate_catch_pp(
     let result = match passed_objects {
         Some(x) => result.passed_objects(x),
         None => result,
-    };
-
-    let result = match nmiss {
-        Some(x) => result.misses(x),
-        None => result.misses(0),
     };
 
     let result = result.calculate();

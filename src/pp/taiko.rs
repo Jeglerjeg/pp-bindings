@@ -49,9 +49,10 @@ pub(crate) fn calculate_taiko_pp(
         None => result,
     };
 
-    let result = match acc {
-        Some(x) => result.accuracy(x),
-        None => result,
+
+    let result = match nmiss {
+        Some(x) => result.misses(x),
+        None => result.misses(0),
     };
 
     let result = match n300 {
@@ -64,15 +65,16 @@ pub(crate) fn calculate_taiko_pp(
         None => result,
     };
 
+    let result = match acc {
+        Some(x) => result.accuracy(x),
+        None => result,
+    };
+
     let result = match passed_objects {
         Some(x) => result.passed_objects(x),
         None => result,
     };
 
-    let result = match nmiss {
-        Some(x) => result.misses(x),
-        None => result.misses(0),
-    };
 
     let stats = TaikoResults {
         total_stars: map.stars(mods, None).stars(),

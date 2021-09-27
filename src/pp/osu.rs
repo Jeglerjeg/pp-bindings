@@ -56,9 +56,9 @@ pub(crate) fn calculate_std_pp(
         None => result,
     };
 
-    let result = match acc {
-        Some(x) => result.accuracy(x),
-        None => result,
+    let result = match nmiss {
+        Some(x) => result.misses(x),
+        None => result.misses(0),
     };
 
     let result = match n300 {
@@ -76,14 +76,14 @@ pub(crate) fn calculate_std_pp(
         None => result,
     };
 
-    let result = match passed_objects {
-        Some(x) => result.passed_objects(x),
+    let result = match acc {
+        Some(x) => result.accuracy(x),
         None => result,
     };
 
-    let result = match nmiss {
-        Some(x) => result.misses(x),
-        None => result.misses(0),
+    let result = match passed_objects {
+        Some(x) => result.passed_objects(x),
+        None => result,
     };
 
     let potential_result = OsuPP::new(&map).mods(mods).misses(0);
