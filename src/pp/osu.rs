@@ -94,15 +94,12 @@ pub(crate) fn calculate_std_pp(
     };
 
     let result = result.calculate();
-    let potential_result = potential_result.calculate();
 
-    let stats = StdResults {
-        total_stars: map.stars(mods, None).stars(),
+    StdResults {
+        total_stars: result.stars(),
         partial_stars: map.stars(mods, passed_objects).stars(),
         pp: result.pp(),
-        max_pp: potential_result.pp(),
+        max_pp: potential_result.calculate().pp(),
         max_combo: result.attributes().unwrap().max_combo,
-    };
-
-    return stats;
+    }
 }

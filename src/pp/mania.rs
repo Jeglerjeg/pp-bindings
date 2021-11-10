@@ -50,11 +50,11 @@ pub(crate) fn calculate_mania_pp(
         None => result,
     };
 
-    let stats = ManiaResults {
-        total_stars: map.stars(mods, None).stars(),
-        partial_stars: map.stars(mods, passed_objects).stars(),
-        pp: result.calculate().pp(),
-    };
+    let result = result.calculate();
 
-    return stats;
+    ManiaResults {
+        total_stars: result.stars(),
+        partial_stars: map.stars(mods, passed_objects).stars(),
+        pp: result.pp(),
+    }
 }

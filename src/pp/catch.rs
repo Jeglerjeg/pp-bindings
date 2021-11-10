@@ -85,12 +85,10 @@ pub(crate) fn calculate_catch_pp(
 
     let result = result.calculate();
 
-    let stats = CatchResults {
-        total_stars: map.stars(mods, None).stars(),
+    CatchResults {
+        total_stars: result.stars(),
         partial_stars: map.stars(mods, passed_objects).stars(),
         pp: result.pp(),
         max_combo: result.attributes().unwrap().max_combo,
-    };
-
-    return stats;
+    }
 }

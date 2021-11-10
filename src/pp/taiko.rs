@@ -74,11 +74,11 @@ pub(crate) fn calculate_taiko_pp(
         None => result,
     };
 
-    let stats = TaikoResults {
-        total_stars: map.stars(mods, None).stars(),
-        partial_stars: map.stars(mods, passed_objects).stars(),
-        pp: result.calculate().pp(),
-    };
+    let result = result.calculate();
 
-    return stats;
+    TaikoResults {
+        total_stars: result.stars(),
+        partial_stars: map.stars(mods, passed_objects).stars(),
+        pp: result.pp(),
+    }
 }

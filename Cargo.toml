@@ -8,7 +8,7 @@ name = "pp_bindings"
 crate-type = ["cdylib"]
 
 [dependencies.cpython]
-version = "0.6"
+version = "0.7"
 features = ["extension-module"]
 
 [dependencies.rosu-pp]
