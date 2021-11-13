@@ -6,6 +6,11 @@ pub(crate) struct TaikoResults {
     total_stars: f32,
     partial_stars: f32,
     pp: f32,
+    ar: f32,
+    cs: f32,
+    od: f32,
+    hp: f32,
+    clock_rate: f32,
 }
 
 impl ToPyObject for TaikoResults {
@@ -17,6 +22,11 @@ impl ToPyObject for TaikoResults {
         dict.set_item(py, "partial_stars", self.partial_stars)
             .unwrap();
         dict.set_item(py, "pp", self.pp).unwrap();
+        dict.set_item(py, "ar", self.ar).unwrap();
+        dict.set_item(py, "cs", self.cs).unwrap();
+        dict.set_item(py, "od", self.od).unwrap();
+        dict.set_item(py, "hp", self.hp).unwrap();
+        dict.set_item(py, "clock_rate", self.clock_rate).unwrap();
 
         dict
     }
@@ -76,9 +86,16 @@ pub(crate) fn calculate_taiko_pp(
 
     let result = result.calculate();
 
+    let map_attributes = map.attributes().mods(mods);
+
     TaikoResults {
         total_stars: map.stars(mods, None).stars(),
         partial_stars: result.stars(),
         pp: result.pp(),
+        ar: map_attributes.ar,
+        cs: map_attributes.cs,
+        od: map_attributes.od,
+        hp: map_attributes.hp,
+        clock_rate: map_attributes.clock_rate,
     }
 }

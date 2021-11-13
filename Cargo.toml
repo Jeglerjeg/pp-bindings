@@ -13,5 +13,4 @@ features = ["extension-module"]
 
 [dependencies.rosu-pp]
 version = "0.2.3"
-default_features = false
-features = ["osu", "taiko", "mania", "fruits", "all_included"]
+default_features = true

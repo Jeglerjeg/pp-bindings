@@ -9,6 +9,11 @@ pub(crate) struct StdResults {
     pp: f32,
     max_pp: f32,
     max_combo: usize,
+    ar: f32,
+    cs: f32,
+    od: f32,
+    hp: f32,
+    clock_rate: f32,
 }
 
 impl ToPyObject for StdResults {
@@ -22,6 +27,11 @@ impl ToPyObject for StdResults {
         dict.set_item(py, "pp", self.pp).unwrap();
         dict.set_item(py, "max_pp", self.max_pp).unwrap();
         dict.set_item(py, "max_combo", self.max_combo).unwrap();
+        dict.set_item(py, "ar", self.ar).unwrap();
+        dict.set_item(py, "cs", self.cs).unwrap();
+        dict.set_item(py, "od", self.od).unwrap();
+        dict.set_item(py, "hp", self.hp).unwrap();
+        dict.set_item(py, "clock_rate", self.clock_rate).unwrap();
 
         dict
     }
@@ -88,6 +98,8 @@ pub(crate) fn calculate_std_pp(
 
     let potential_result = OsuPP::new(&map).mods(mods).misses(0);
 
+    let map_attributes = map.attributes().mods(mods);
+
     let potential_result = match potential_acc {
         Some(x) => potential_result.accuracy(x),
         None => potential_result,
@@ -101,5 +113,10 @@ pub(crate) fn calculate_std_pp(
         pp: result.pp(),
         max_pp: potential_result.calculate().pp(),
         max_combo: result.attributes().unwrap().max_combo,
+        ar: map_attributes.ar,
+        cs: map_attributes.cs,
+        od: map_attributes.od,
+        hp: map_attributes.hp,
+        clock_rate: map_attributes.clock_rate,
     }
 }

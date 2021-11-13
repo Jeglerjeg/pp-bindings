@@ -8,6 +8,11 @@ pub(crate) struct CatchResults {
     partial_stars: f32,
     pp: f32,
     max_combo: usize,
+    ar: f32,
+    cs: f32,
+    od: f32,
+    hp: f32,
+    clock_rate: f32,
 }
 
 impl ToPyObject for CatchResults {
@@ -20,6 +25,11 @@ impl ToPyObject for CatchResults {
             .unwrap();
         dict.set_item(py, "pp", self.pp).unwrap();
         dict.set_item(py, "max_combo", self.max_combo).unwrap();
+        dict.set_item(py, "ar", self.ar).unwrap();
+        dict.set_item(py, "cs", self.cs).unwrap();
+        dict.set_item(py, "od", self.od).unwrap();
+        dict.set_item(py, "hp", self.hp).unwrap();
+        dict.set_item(py, "clock_rate", self.clock_rate).unwrap();
 
         dict
     }
@@ -85,10 +95,17 @@ pub(crate) fn calculate_catch_pp(
 
     let result = result.calculate();
 
+    let map_attributes = map.attributes().mods(mods);
+
     CatchResults {
         total_stars: map.stars(mods, None).stars(),
         partial_stars: result.stars(),
         pp: result.pp(),
         max_combo: result.attributes().unwrap().max_combo,
+        ar: map_attributes.ar,
+        cs: map_attributes.cs,
+        od: map_attributes.od,
+        hp: map_attributes.hp,
+        clock_rate: map_attributes.clock_rate,
     }
 }
