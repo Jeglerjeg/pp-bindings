@@ -4,16 +4,16 @@ use rosu_pp::{Beatmap, BeatmapExt, OsuPP};
 use std::fs::File;
 
 pub(crate) struct StdResults {
-    total_stars: f32,
-    partial_stars: f32,
-    pp: f32,
-    max_pp: f32,
+    total_stars: f64,
+    partial_stars: f64,
+    pp: f64,
+    max_pp: f64,
     max_combo: usize,
-    ar: f32,
-    cs: f32,
-    od: f32,
-    hp: f32,
-    clock_rate: f32,
+    ar: f64,
+    cs: f64,
+    od: f64,
+    hp: f64,
+    clock_rate: f64,
 }
 
 impl ToPyObject for StdResults {
@@ -41,8 +41,8 @@ pub(crate) fn calculate_std_pp(
     map: String,
     mods: u32,
     combo: Option<usize>,
-    acc: Option<f32>,
-    potential_acc: Option<f32>,
+    acc: Option<f64>,
+    potential_acc: Option<f64>,
     n300: Option<usize>,
     n100: Option<usize>,
     n50: Option<usize>,
@@ -110,8 +110,8 @@ pub(crate) fn calculate_std_pp(
     StdResults {
         total_stars: map.stars(mods, None).stars(),
         partial_stars: result.stars(),
-        pp: result.pp(),
-        max_pp: potential_result.calculate().pp(),
+        pp: result.pp,
+        max_pp: potential_result.calculate().pp,
         max_combo: result.attributes().unwrap().max_combo,
         ar: map_attributes.ar,
         cs: map_attributes.cs,

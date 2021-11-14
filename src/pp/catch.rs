@@ -4,15 +4,15 @@ use rosu_pp::{Beatmap, BeatmapExt, FruitsPP};
 use std::fs::File;
 
 pub(crate) struct CatchResults {
-    total_stars: f32,
-    partial_stars: f32,
-    pp: f32,
+    total_stars: f64,
+    partial_stars: f64,
+    pp: f64,
     max_combo: usize,
-    ar: f32,
-    cs: f32,
-    od: f32,
-    hp: f32,
-    clock_rate: f32,
+    ar: f64,
+    cs: f64,
+    od: f64,
+    hp: f64,
+    clock_rate: f64,
 }
 
 impl ToPyObject for CatchResults {
@@ -100,7 +100,7 @@ pub(crate) fn calculate_catch_pp(
     CatchResults {
         total_stars: map.stars(mods, None).stars(),
         partial_stars: result.stars(),
-        pp: result.pp(),
+        pp: result.pp,
         max_combo: result.attributes().unwrap().max_combo,
         ar: map_attributes.ar,
         cs: map_attributes.cs,

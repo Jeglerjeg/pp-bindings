@@ -3,14 +3,14 @@ use rosu_pp::{Beatmap, BeatmapExt, TaikoPP};
 use std::fs::File;
 
 pub(crate) struct TaikoResults {
-    total_stars: f32,
-    partial_stars: f32,
-    pp: f32,
-    ar: f32,
-    cs: f32,
-    od: f32,
-    hp: f32,
-    clock_rate: f32,
+    total_stars: f64,
+    partial_stars: f64,
+    pp: f64,
+    ar: f64,
+    cs: f64,
+    od: f64,
+    hp: f64,
+    clock_rate: f64,
 }
 
 impl ToPyObject for TaikoResults {
@@ -36,7 +36,7 @@ pub(crate) fn calculate_taiko_pp(
     map: String,
     mods: u32,
     combo: Option<usize>,
-    acc: Option<f32>,
+    acc: Option<f64>,
     n300: Option<usize>,
     n100: Option<usize>,
     nmiss: Option<usize>,
@@ -91,7 +91,7 @@ pub(crate) fn calculate_taiko_pp(
     TaikoResults {
         total_stars: map.stars(mods, None).stars(),
         partial_stars: result.stars(),
-        pp: result.pp(),
+        pp: result.pp,
         ar: map_attributes.ar,
         cs: map_attributes.cs,
         od: map_attributes.od,
