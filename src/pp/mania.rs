@@ -1,6 +1,6 @@
+use super::parse::parse_map;
 use cpython::{PyDict, Python, ToPyObject};
-use rosu_pp::{Beatmap, BeatmapExt, ManiaPP};
-use std::fs::File;
+use rosu_pp::{BeatmapExt, ManiaPP};
 
 pub(crate) struct ManiaResults {
     total_stars: f64,
@@ -33,20 +33,12 @@ impl ToPyObject for ManiaResults {
 }
 
 pub(crate) fn calculate_mania_pp(
-    map: String,
+    file_path: String,
     mods: u32,
     score: Option<u32>,
     passed_objects: Option<usize>,
 ) -> ManiaResults {
-    let file = match File::open(map) {
-        Ok(file) => file,
-        Err(why) => panic!("Could not open file: {}", why),
-    };
-
-    let map = match Beatmap::parse(file) {
-        Ok(map) => map,
-        Err(why) => panic!("Error while parsing map: {}", why),
-    };
+    let map = parse_map(file_path);
 
     let result = ManiaPP::new(&map).mods(mods);
 

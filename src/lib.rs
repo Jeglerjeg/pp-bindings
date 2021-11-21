@@ -77,7 +77,7 @@ py_module_initializer!(pp_bindings, |py, m| {
 
 fn calculate_std_pp_py(
     _: Python,
-    map: String,
+    file_path: String,
     mods: u32,
     combo: Option<usize>,
     acc: Option<f64>,
@@ -89,7 +89,7 @@ fn calculate_std_pp_py(
     passed_objects: Option<usize>,
 ) -> PyResult<pp::osu::StdResults> {
     let pp_stats = pp::osu::calculate_std_pp(
-        map,
+        file_path,
         mods,
         combo,
         acc,
@@ -105,7 +105,7 @@ fn calculate_std_pp_py(
 
 fn calculate_taiko_pp_py(
     _: Python,
-    map: String,
+    file_path: String,
     mods: u32,
     combo: Option<usize>,
     acc: Option<f64>,
@@ -114,25 +114,33 @@ fn calculate_taiko_pp_py(
     nmiss: Option<usize>,
     passed_objects: Option<usize>,
 ) -> PyResult<pp::taiko::TaikoResults> {
-    let pp_stats =
-        pp::taiko::calculate_taiko_pp(map, mods, combo, acc, n300, n100, nmiss, passed_objects);
+    let pp_stats = pp::taiko::calculate_taiko_pp(
+        file_path,
+        mods,
+        combo,
+        acc,
+        n300,
+        n100,
+        nmiss,
+        passed_objects,
+    );
     Ok(pp_stats)
 }
 
 fn calculate_mania_pp_py(
     _: Python,
-    map: String,
+    file_path: String,
     mods: u32,
     score: Option<u32>,
     passed_objects: Option<usize>,
 ) -> PyResult<pp::mania::ManiaResults> {
-    let pp_stats = pp::mania::calculate_mania_pp(map, mods, score, passed_objects);
+    let pp_stats = pp::mania::calculate_mania_pp(file_path, mods, score, passed_objects);
     Ok(pp_stats)
 }
 
 fn calculate_catch_pp_py(
     _: Python,
-    map: String,
+    file_path: String,
     mods: u32,
     combo: Option<usize>,
     fruits: Option<usize>,
@@ -143,7 +151,7 @@ fn calculate_catch_pp_py(
     passed_objects: Option<usize>,
 ) -> PyResult<pp::catch::CatchResults> {
     let pp_stats = pp::catch::calculate_catch_pp(
-        map,
+        file_path,
         mods,
         combo,
         fruits,

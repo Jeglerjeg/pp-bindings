@@ -1,7 +1,6 @@
+use super::parse::parse_map;
 use cpython::{PyDict, Python, ToPyObject};
-use rosu_pp::fruits::FruitsAttributeProvider;
-use rosu_pp::{Beatmap, BeatmapExt, FruitsPP};
-use std::fs::File;
+use rosu_pp::{BeatmapExt, FruitsPP};
 
 pub(crate) struct CatchResults {
     total_stars: f64,
@@ -36,7 +35,7 @@ impl ToPyObject for CatchResults {
 }
 
 pub(crate) fn calculate_catch_pp(
-    map: String,
+    file_path: String,
     mods: u32,
     combo: Option<usize>,
     fruits: Option<usize>,
@@ -46,15 +45,7 @@ pub(crate) fn calculate_catch_pp(
     nmiss: Option<usize>,
     passed_objects: Option<usize>,
 ) -> CatchResults {
-    let file = match File::open(map) {
-        Ok(file) => file,
-        Err(why) => panic!("Could not open file: {}", why),
-    };
-
-    let map = match Beatmap::parse(file) {
-        Ok(map) => map,
-        Err(why) => panic!("Error while parsing map: {}", why),
-    };
+    let map = parse_map(file_path);
 
     let result = FruitsPP::new(&map).mods(mods);
 
@@ -101,7 +92,7 @@ pub(crate) fn calculate_catch_pp(
         total_stars: map.stars(mods, None).stars(),
         partial_stars: result.stars(),
         pp: result.pp,
-        max_combo: result.attributes().unwrap().max_combo,
+        max_combo: result.attributes.max_combo,
         ar: map_attributes.ar,
         cs: map_attributes.cs,
         od: map_attributes.od,

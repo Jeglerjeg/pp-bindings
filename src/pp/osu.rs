@@ -1,7 +1,6 @@
+use super::parse::parse_map;
 use cpython::{PyDict, Python, ToPyObject};
-use rosu_pp::osu::OsuAttributeProvider;
-use rosu_pp::{Beatmap, BeatmapExt, OsuPP};
-use std::fs::File;
+use rosu_pp::{BeatmapExt, OsuPP};
 
 pub(crate) struct StdResults {
     total_stars: f64,
@@ -38,7 +37,7 @@ impl ToPyObject for StdResults {
 }
 
 pub(crate) fn calculate_std_pp(
-    map: String,
+    file_path: String,
     mods: u32,
     combo: Option<usize>,
     acc: Option<f64>,
@@ -49,15 +48,7 @@ pub(crate) fn calculate_std_pp(
     nmiss: Option<usize>,
     passed_objects: Option<usize>,
 ) -> StdResults {
-    let file = match File::open(map) {
-        Ok(file) => file,
-        Err(why) => panic!("Could not open file: {}", why),
-    };
-
-    let map = match Beatmap::parse(file) {
-        Ok(map) => map,
-        Err(why) => panic!("Error while parsing map: {}", why),
-    };
+    let map = parse_map(file_path);
 
     let result = OsuPP::new(&map).mods(mods);
 
@@ -112,7 +103,7 @@ pub(crate) fn calculate_std_pp(
         partial_stars: result.stars(),
         pp: result.pp,
         max_pp: potential_result.calculate().pp,
-        max_combo: result.attributes().unwrap().max_combo,
+        max_combo: result.attributes.max_combo,
         ar: map_attributes.ar,
         cs: map_attributes.cs,
         od: map_attributes.od,

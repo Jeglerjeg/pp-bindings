@@ -1,6 +1,6 @@
+use super::parse::parse_map;
 use cpython::{PyDict, Python, ToPyObject};
-use rosu_pp::{Beatmap, BeatmapExt, TaikoPP};
-use std::fs::File;
+use rosu_pp::{BeatmapExt, TaikoPP};
 
 pub(crate) struct TaikoResults {
     total_stars: f64,
@@ -33,7 +33,7 @@ impl ToPyObject for TaikoResults {
 }
 
 pub(crate) fn calculate_taiko_pp(
-    map: String,
+    file_path: String,
     mods: u32,
     combo: Option<usize>,
     acc: Option<f64>,
@@ -42,15 +42,7 @@ pub(crate) fn calculate_taiko_pp(
     nmiss: Option<usize>,
     passed_objects: Option<usize>,
 ) -> TaikoResults {
-    let file = match File::open(map) {
-        Ok(file) => file,
-        Err(why) => panic!("Could not open file: {}", why),
-    };
-
-    let map = match Beatmap::parse(file) {
-        Ok(map) => map,
-        Err(why) => panic!("Error while parsing map: {}", why),
-    };
+    let map = parse_map(file_path);
 
     let result = TaikoPP::new(&map).mods(mods);
 
