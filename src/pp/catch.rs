@@ -92,7 +92,7 @@ pub(crate) fn calculate_catch_pp(
         total_stars: map.stars(mods, None).stars(),
         partial_stars: result.stars(),
         pp: result.pp,
-        max_combo: result.attributes.max_combo,
+        max_combo: result.max_combo(),
         ar: map_attributes.ar,
         cs: map_attributes.cs,
         od: map_attributes.od,

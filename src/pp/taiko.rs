@@ -6,6 +6,7 @@ pub(crate) struct TaikoResults {
     total_stars: f64,
     partial_stars: f64,
     pp: f64,
+    max_combo: usize,
     ar: f64,
     cs: f64,
     od: f64,
@@ -22,6 +23,7 @@ impl ToPyObject for TaikoResults {
         dict.set_item(py, "partial_stars", self.partial_stars)
             .unwrap();
         dict.set_item(py, "pp", self.pp).unwrap();
+        dict.set_item(py, "max_combo", self.max_combo).unwrap();
         dict.set_item(py, "ar", self.ar).unwrap();
         dict.set_item(py, "cs", self.cs).unwrap();
         dict.set_item(py, "od", self.od).unwrap();
@@ -84,6 +86,7 @@ pub(crate) fn calculate_taiko_pp(
         total_stars: map.stars(mods, None).stars(),
         partial_stars: result.stars(),
         pp: result.pp,
+        max_combo: result.max_combo(),
         ar: map_attributes.ar,
         cs: map_attributes.cs,
         od: map_attributes.od,

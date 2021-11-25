@@ -103,7 +103,7 @@ pub(crate) fn calculate_std_pp(
         partial_stars: result.stars(),
         pp: result.pp,
         max_pp: potential_result.calculate().pp,
-        max_combo: result.attributes.max_combo,
+        max_combo: result.max_combo(),
         ar: map_attributes.ar,
         cs: map_attributes.cs,
         od: map_attributes.od,
